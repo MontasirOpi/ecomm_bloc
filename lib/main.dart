@@ -1,5 +1,4 @@
 import 'package:ecomm_bloc/presentation/auth/login/login_screen.dart';
-
 import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_bloc.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_bloc.dart';
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => LoginBloc(authBox)),
-        BlocProvider(create: (_) => HomeBloc()),
+        BlocProvider(create: (_) => HomeScreenBloc()),
         //BlocProvider(create: (_) => CartBloc()..add(LoadCart([]))),
       ],
       child: MaterialApp(

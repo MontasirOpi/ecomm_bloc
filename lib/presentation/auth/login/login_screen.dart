@@ -40,9 +40,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const HomeScreen()),
                     );
                   } else if (state is LoginFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.error)),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.error)));
                   }
                 },
                 builder: (context, state) {
@@ -52,14 +52,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       const Text(
                         "Welcome",
                         style: TextStyle(
-                            fontSize: 28, fontWeight: FontWeight.bold),
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
                         controller: _idController,
                         enabled: false,
-                        decoration:
-                            const InputDecoration(labelText: "User ID"),
+                        decoration: const InputDecoration(labelText: "User ID"),
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
@@ -91,16 +92,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   context.read<LoginBloc>().add(
-                                        LoginButtonPressed(
-                                          userId: _idController.text,
-                                          password: _passwordController.text,
-                                        ),
-                                      );
+                                    LoginButtonPressed(
+                                      userId: _idController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  );
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 156, 181, 202),
+                                backgroundColor: const Color.fromARGB(
+                                  255,
+                                  156,
+                                  181,
+                                  202,
+                                ),
                                 foregroundColor: Colors.white,
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 40,

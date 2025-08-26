@@ -1,31 +1,50 @@
-import 'package:equatable/equatable.dart';
+// home_screen_state.dart
 import 'package:ecomm_bloc/data/model/product_model.dart';
+import 'package:equatable/equatable.dart';
 
-enum HomeStatus { initial, loading, success, failure }
-
-class HomeState extends Equatable {
-  final HomeStatus status;
-  final List<Product> products;
-  final String? errorMessage;
-
-  const HomeState({
-    this.status = HomeStatus.initial,
-    this.products = const [],
-    this.errorMessage,
-  });
-
-  HomeState copyWith({
-    HomeStatus? status,
-    List<Product>? products,
-    String? errorMessage,
-  }) {
-    return HomeState(
-      status: status ?? this.status,
-      products: products ?? this.products,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
+sealed class HomeScreenState extends Equatable {
+  const HomeScreenState();
 
   @override
-  List<Object?> get props => [status, products, errorMessage];
+  List<Object> get props => [];
+}
+
+final class HomeScreenInitial extends HomeScreenState {}
+
+class HomeScreenLoading extends HomeScreenState {}
+
+class HomeScreenLoaded extends HomeScreenState {
+  final List<Product> products;
+  final int currentTab;
+  final bool hasError;
+
+  const HomeScreenLoaded({
+    required this.products,
+    this.currentTab = 0,
+    this.hasError = false,
+  });
+
+  @override
+  List<Object> get props => [products, currentTab, hasError];
+
+  HomeScreenLoaded copyWith({
+    List<Product>? products,
+    int? currentTab,
+    bool? hasError,
+  }) {
+    return HomeScreenLoaded(
+      products: products ?? this.products,
+      currentTab: currentTab ?? this.currentTab,
+      hasError: hasError ?? this.hasError,
+    );
+  }
+}
+
+class HomeScreenError extends HomeScreenState {
+  final String message;
+
+  const HomeScreenError(this.message);
+
+  @override
+  List<Object> get props => [message];
 }
