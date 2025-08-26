@@ -1,9 +1,9 @@
-import 'package:ecomm_bloc/presentation/auth/login/ui/login_screen.dart';
 import 'package:ecomm_bloc/presentation/profile/bloc/profile_bloc.dart';
 import 'package:ecomm_bloc/presentation/profile/bloc/profile_event.dart';
 import 'package:ecomm_bloc/presentation/profile/bloc/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -94,13 +94,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ElevatedButton(
                       onPressed: () {
                         context.read<ProfileBloc>().add(Logout());
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const LoginScreen(),
-                          ),
-                          (route) => false,
-                        );
+                        context.go("/login"); // ✅ GoRouter instead of Navigator
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
