@@ -1,12 +1,19 @@
-import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
-import 'package:ecomm_bloc/presentation/cart/cart_screen.dart';
+import 'package:ecomm_bloc/data/model/product_model.dart';
+import 'package:ecomm_bloc/presentation/cart/ui/cart_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
+import 'package:ecomm_bloc/presentation/cart/bloc/cart_state.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
+  final List<Product> products; // Add products parameter
 
-  const CustomAppBar({super.key, required this.title});
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    required this.products, // Require products
+  });
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -17,11 +24,16 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   int _getCartCount() {
-    int totalItems = 0;
-    for (var item in CartManager.cartItems.values) {
-      totalItems += item;
+    // Use CartBloc to get cart count instead of CartManager
+    final cartState = context.read<CartBloc>().state;
+    if (cartState is CartLoaded) {
+      int totalItems = 0;
+      for (var item in cartState.cartItems.values) {
+        totalItems += item;
+      }
+      return totalItems;
     }
-    return totalItems;
+    return 0;
   }
 
   @override
@@ -39,7 +51,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const CartScreen()),
+                  MaterialPageRoute(
+                    builder: (_) => CartScreen(
+                      products: widget.products,
+                    ), // Use widget.products
+                  ),
                 ).then((_) {
                   setState(() {}); // refresh badge count when coming back
                 });

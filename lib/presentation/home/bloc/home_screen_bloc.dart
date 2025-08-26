@@ -1,8 +1,7 @@
-// home_screen_bloc.dart
 import 'package:bloc/bloc.dart';
 import 'package:ecomm_bloc/data/api_service.dart';
 import 'package:ecomm_bloc/data/model/product_model.dart';
-import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
+import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_event.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_state.dart';
 
@@ -28,8 +27,6 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       emit(HomeScreenLoaded(products: products));
     } catch (e) {
       emit(HomeScreenError('Failed to load products: $e'));
-      // Alternatively, you could emit HomeScreenLoaded with hasError: true
-      // emit(HomeScreenLoaded(products: [], hasError: true));
     }
   }
 

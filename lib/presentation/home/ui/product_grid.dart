@@ -1,6 +1,6 @@
 import 'package:ecomm_bloc/data/model/product_model.dart';
-import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
-import 'package:ecomm_bloc/presentation/home/product_card.dart';
+import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
+import 'package:ecomm_bloc/presentation/home/ui/product_card.dart';
 import 'package:flutter/material.dart';
 
 class ProductGrid extends StatelessWidget {

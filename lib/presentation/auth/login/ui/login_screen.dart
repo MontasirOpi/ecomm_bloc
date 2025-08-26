@@ -1,4 +1,4 @@
-import 'package:ecomm_bloc/presentation/home/home_screen.dart';
+import 'package:ecomm_bloc/presentation/home/ui/home_screen.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_bloc.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_event.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_state.dart';

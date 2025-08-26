@@ -1,24 +1,14 @@
-// home_screen.dart
-import 'package:ecomm_bloc/data/model/product_model.dart';
-import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
-import 'package:ecomm_bloc/presentation/home/product_grid.dart';
+import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
+import 'package:ecomm_bloc/presentation/cart/bloc/cart_event.dart';
+import 'package:ecomm_bloc/presentation/home/ui/product_grid.dart';
 import 'package:ecomm_bloc/presentation/home/widgets/custom_app_bar.dart';
 import 'package:ecomm_bloc/presentation/home/widgets/custom_bottom_navBar.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_bloc.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_event.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_state.dart';
+import 'package:ecomm_bloc/presentation/profile/ui/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-// Placeholder for ProfileScreen
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Profile Screen'));
-  }
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,6 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
             title: state is HomeScreenLoaded
                 ? ["Home", "Profile"][state.currentTab]
                 : "Home",
+            products: state is HomeScreenLoaded
+                ? state.products
+                : [], // Pass products
           ),
           body: _buildBody(state),
           bottomNavigationBar: state is HomeScreenLoaded
@@ -91,6 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (state is HomeScreenLoaded) {
+      // Load cart with the fetched products
+      context.read<CartBloc>().add(LoadCart(state.products));
+
       final List<Widget> pages = [
         // Home Tab
         RefreshIndicator(

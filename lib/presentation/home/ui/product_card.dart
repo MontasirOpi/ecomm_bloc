@@ -1,10 +1,7 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecomm_bloc/data/model/product_model.dart';
-import 'package:ecomm_bloc/presentation/home/product_detail_screen.dart';
+import 'package:ecomm_bloc/presentation/home/ui/product_detail_screen.dart';
 import 'package:flutter/material.dart';
-
-
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -29,9 +26,7 @@ class ProductCard extends StatelessWidget {
       },
       child: Card(
         elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,16 +66,12 @@ class ProductCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     "\$${product.price}",
-                    style: const TextStyle(
-                      color: Colors.green,
-                      fontSize: 13,
-                    ),
+                    style: const TextStyle(color: Colors.green, fontSize: 13),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.star,
-                          color: Colors.amber, size: 14),
+                      const Icon(Icons.star, color: Colors.amber, size: 14),
                       const SizedBox(width: 2),
                       Text(
                         "${product.rating.rate}",

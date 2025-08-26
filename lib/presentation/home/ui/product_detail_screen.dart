@@ -2,10 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:ecomm_bloc/data/model/product_model.dart';
-import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
+import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:flutter/material.dart';
-
-
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;

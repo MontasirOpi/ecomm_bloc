@@ -1,4 +1,3 @@
-// home_screen_state.dart
 import 'package:ecomm_bloc/data/model/product_model.dart';
 import 'package:equatable/equatable.dart';
 
