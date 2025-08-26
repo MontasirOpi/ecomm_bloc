@@ -1,7 +1,6 @@
 import 'package:ecomm_bloc/data/model/product_model.dart';
 import 'package:hive/hive.dart';
 
-
 class CartManager {
   static late Box _cartBox; // Hive box
   static final Map<Product, int> _cart = {};

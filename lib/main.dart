@@ -1,13 +1,13 @@
 import 'package:ecomm_bloc/presentation/auth/login/login_screen.dart';
+
 import 'package:ecomm_bloc/presentation/cart/card_manager.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_bloc.dart';
+import 'package:ecomm_bloc/presentation/home/bloc/home_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-
-
   await Hive.initFlutter();
   await Hive.openBox('authBox'); // box for storing login info
   await Hive.openBox<String>('images');
@@ -29,7 +29,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => LoginBloc(authBox))],
+      providers: [
+        BlocProvider(create: (_) => LoginBloc(authBox)),
+        BlocProvider(create: (_) => HomeBloc()),
+        //BlocProvider(create: (_) => CartBloc()..add(LoadCart([]))),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: LoginScreen(),

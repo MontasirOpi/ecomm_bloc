@@ -7,12 +7,9 @@ class CartScreen extends StatefulWidget {
 
   @override
   State<CartScreen> createState() => _CartScreenState();
-  
 }
 
-
 class _CartScreenState extends State<CartScreen> {
-  
   @override
   Widget build(BuildContext context) {
     // Clear image cache to avoid stale data
@@ -22,7 +19,12 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text("Cart",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),)),
+        title: Center(
+          child: const Text(
+            "Cart",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
+        ),
       ),
       body: cartItems.isEmpty
           ? const Center(child: Text("Cart is empty"))
@@ -103,7 +105,10 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 // Total Price Section
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   color: Colors.grey[200],
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
