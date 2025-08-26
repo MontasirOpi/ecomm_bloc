@@ -4,13 +4,11 @@ sealed class ProfileState extends Equatable {
   final String userId;
   final String password;
   final bool isLoading;
-  final String? messege;
 
   const ProfileState({
     this.userId = "admin",
     this.password = "1234",
     this.isLoading = false,
-    this.messege,
   });
 
   ProfileState copyWith({
@@ -23,12 +21,11 @@ sealed class ProfileState extends Equatable {
       userId: userId ?? this.userId,
       password: password ?? this.password,
       isLoading: isLoading ?? this.isLoading,
-      messege: messege ?? this.messege,
     );
   }
 
   @override
-  List<Object> get props => [userId, password, isLoading, messege ?? ''];
+  List<Object> get props => [userId, password];
 }
 
 final class ProfileInitial extends ProfileState {
@@ -36,11 +33,5 @@ final class ProfileInitial extends ProfileState {
     String userId = "admin",
     String password = "1234",
     bool isLoading = false,
-    String? messege,
-  }) : super(
-         userId: userId,
-         password: password,
-         isLoading: isLoading,
-         messege: messege,
-       );
+  }) : super(userId: userId, password: password, isLoading: isLoading);
 }

@@ -55,13 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileBloc, ProfileState>(
-      listener: (context, state) {
-        // if (state.message != null) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     SnackBar(content: Text(state.message!)),
-        //   );
-        // }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           body: SafeArea(
