@@ -20,7 +20,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(
       state.copyWith(
         password: event.newPassword,
-        messege: "Password updated successfully ✅",
+        messege: "Password updated successfully",
       ),
     );
   }
