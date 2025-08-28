@@ -18,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool _cartLoaded = false; // Track if cart has been loaded
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
+
+        // Load cart only once when products are successfully loaded
+        if (state is HomeScreenLoaded && !_cartLoaded) {
+          context.read<CartBloc>().add(CartLoadEvent(state.products));
+          _cartLoaded = true;
+        }
+
+        // Reset cart loaded flag if we get back to loading state
+        if (state is HomeScreenLoading) {
+          _cartLoaded = false;
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -42,9 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             title: state is HomeScreenLoaded
                 ? ["Home", "Profile"][state.currentTab]
                 : "Home",
-            products: state is HomeScreenLoaded
-                ? state.products
-                : [], // Pass products
+            products: state is HomeScreenLoaded ? state.products : [],
           ),
           body: _buildBody(state),
           bottomNavigationBar: state is HomeScreenLoaded
@@ -84,14 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (state is HomeScreenLoaded) {
-      // Load cart with the fetched products
-      context.read<CartBloc>().add(LoadCart(state.products));
-
       final List<Widget> pages = [
         // Home Tab
         RefreshIndicator(
           onRefresh: () async {
             context.read<HomeScreenBloc>().add(RefreshProducts());
+            // Reset cart loaded flag when refreshing
+            _cartLoaded = false;
           },
           child: ProductGrid(products: state.products),
         ),

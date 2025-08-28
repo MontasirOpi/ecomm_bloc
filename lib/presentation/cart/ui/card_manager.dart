@@ -70,14 +70,3 @@ class CartManager {
     return total;
   }
 }
-// cart_manager.dart (optional - simplified service)
-// import 'package:ecomm_bloc/data/model/product_model.dart';
-
-// class CartManager {
-//   static final CartManager _instance = CartManager._internal();
-//   factory CartManager() => _instance;
-//   CartManager._internal();
-
-//   // You can use this for simple cart operations outside BLoC if needed
-//   // But most logic should be in the BLoC
-// }
