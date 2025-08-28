@@ -30,9 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
               listener: (context, state) {
                 if (state is LoginSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Login Successful ✅")),
+                    const SnackBar(content: Text("Login Successful ")),
                   );
-                  context.go("/home"); // ✅ GoRouter navigation
+                  context.go("/home"); //  GoRouter navigation
                 } else if (state is LoginFailure) {
                   ScaffoldMessenger.of(
                     context,

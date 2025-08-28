@@ -1,4 +1,3 @@
-import 'package:ecomm_bloc/presentation/auth/login/ui/login_screen.dart';
 import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
 import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_bloc.dart';
@@ -9,7 +8,6 @@ import 'package:ecomm_bloc/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:go_router/go_router.dart';
 
 void main() async {
   await Hive.initFlutter();

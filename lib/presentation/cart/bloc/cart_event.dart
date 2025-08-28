@@ -1,56 +1,34 @@
+// events/cart_events.dart
+import 'package:flutter/material.dart';
+
 import 'package:ecomm_bloc/data/model/product_model.dart';
-import 'package:equatable/equatable.dart';
 
-sealed class CartEvent extends Equatable {
-  const CartEvent();
+@immutable
+abstract class CartEvent {}
 
-  @override
-  List<Object> get props => [];
-}
-
-class LoadCart extends CartEvent {
+class CartLoadEvent extends CartEvent {
   final List<Product> products;
-
-  const LoadCart(this.products);
-
-  @override
-  List<Object> get props => [products];
+  CartLoadEvent(this.products);
 }
 
-class AddToCart extends CartEvent {
+class CartAddEvent extends CartEvent {
   final Product product;
-
-  const AddToCart(this.product);
-
-  @override
-  List<Object> get props => [product];
+  CartAddEvent(this.product);
 }
 
-class RemoveFromCart extends CartEvent {
+class CartRemoveEvent extends CartEvent {
   final Product product;
-
-  const RemoveFromCart(this.product);
-
-  @override
-  List<Object> get props => [product];
+  CartRemoveEvent(this.product);
 }
 
-class IncreaseQuantity extends CartEvent {
+class CartIncreaseQuantityEvent extends CartEvent {
   final Product product;
-
-  const IncreaseQuantity(this.product);
-
-  @override
-  List<Object> get props => [product];
+  CartIncreaseQuantityEvent(this.product);
 }
 
-class DecreaseQuantity extends CartEvent {
+class CartDecreaseQuantityEvent extends CartEvent {
   final Product product;
-
-  const DecreaseQuantity(this.product);
-
-  @override
-  List<Object> get props => [product];
+  CartDecreaseQuantityEvent(this.product);
 }
 
-class ClearCart extends CartEvent {}
+class CartClearEvent extends CartEvent {}
