@@ -1,33 +1,35 @@
-// events/cart_events.dart
-import 'package:flutter/material.dart';
-
+// presentation/cart/bloc/cart_event.dart
 import 'package:ecomm_bloc/data/model/product_model.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 abstract class CartEvent {}
 
 class CartLoadEvent extends CartEvent {
-  final List<Product> products;
-  CartLoadEvent(this.products);
+  CartLoadEvent(List<Product> products);
 }
 
-class CartAddEvent extends CartEvent {
+class CartAddItemEvent extends CartEvent {
   final Product product;
-  CartAddEvent(this.product);
+
+  CartAddItemEvent(this.product);
 }
 
-class CartRemoveEvent extends CartEvent {
+class CartRemoveItemEvent extends CartEvent {
   final Product product;
-  CartRemoveEvent(this.product);
+
+  CartRemoveItemEvent(this.product);
 }
 
 class CartIncreaseQuantityEvent extends CartEvent {
   final Product product;
+
   CartIncreaseQuantityEvent(this.product);
 }
 
 class CartDecreaseQuantityEvent extends CartEvent {
   final Product product;
+
   CartDecreaseQuantityEvent(this.product);
 }
 

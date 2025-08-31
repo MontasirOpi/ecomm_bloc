@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
-import 'package:ecomm_bloc/presentation/cart/bloc/cart_event.dart';
-import 'package:ecomm_bloc/presentation/cart/bloc/cart_state.dart';
+import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -14,38 +11,24 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     // Clear image cache to avoid stale data
     imageCache.clear();
     imageCache.clearLiveImages();
-  }
+    final cartItems = CartManager.cartItems;
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
+        title: Center(
+          child: const Text(
             "Cart",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
       ),
-      body: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          if (state is CartLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is CartError) {
-            return Center(child: Text('Error: ${state.message}'));
-          } else if (state is CartLoaded) {
-            final cartItems = state.cartItems;
-
-            if (cartItems.isEmpty) {
-              return const Center(child: Text("Cart is empty"));
-            }
-
-            return Column(
+      body: cartItems.isEmpty
+          ? const Center(child: Text("Cart is empty"))
+          : Column(
               children: [
                 Expanded(
                   child: ListView.builder(
@@ -53,7 +36,7 @@ class _CartScreenState extends State<CartScreen> {
                     itemBuilder: (context, index) {
                       final product = cartItems.keys.elementAt(index);
                       final quantity = cartItems[product]!;
-
+                      debugPrint("Cart Image URL: ${product.image}");
                       return ListTile(
                         leading: CachedNetworkImage(
                           imageUrl: product.image,
@@ -64,6 +47,7 @@ class _CartScreenState extends State<CartScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                           errorWidget: (context, url, error) {
+                            debugPrint("Image load error for $url: $error");
                             return const Icon(
                               Icons.broken_image,
                               size: 40,
@@ -83,9 +67,9 @@ class _CartScreenState extends State<CartScreen> {
                             IconButton(
                               icon: const Icon(Icons.remove),
                               onPressed: () {
-                                context.read<CartBloc>().add(
-                                  CartDecreaseQuantityEvent(product),
-                                );
+                                setState(() {
+                                  CartManager.decreaseQuantity(product);
+                                });
                               },
                             ),
                             Text(
@@ -95,17 +79,17 @@ class _CartScreenState extends State<CartScreen> {
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
-                                context.read<CartBloc>().add(
-                                  CartIncreaseQuantityEvent(product),
-                                );
+                                setState(() {
+                                  CartManager.increaseQuantity(product);
+                                });
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () {
-                                context.read<CartBloc>().add(
-                                  CartRemoveEvent(product),
-                                );
+                                setState(() {
+                                  CartManager.removeFromCart(product);
+                                });
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("Removed from cart"),
@@ -137,7 +121,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                       Text(
-                        "\$${state.totalPrice.toStringAsFixed(2)}",
+                        "\$${CartManager.getTotalPrice().toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -148,12 +132,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ),
               ],
-            );
-          } else {
-            return const Center(child: Text("Cart is empty"));
-          }
-        },
-      ),
+            ),
     );
   }
 }
