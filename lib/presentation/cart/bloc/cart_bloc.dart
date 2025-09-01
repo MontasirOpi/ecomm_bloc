@@ -1,14 +1,13 @@
 // presentation/cart/bloc/cart_bloc.dart
-
 import 'package:ecomm_bloc/presentation/cart/bloc/cart_event.dart';
 import 'package:ecomm_bloc/presentation/cart/bloc/cart_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
     on<CartLoadEvent>(_onCartLoad);
+  
     on<CartAddItemEvent>(_onAddItem);
     on<CartRemoveItemEvent>(_onRemoveItem);
     on<CartIncreaseQuantityEvent>(_onIncreaseQuantity);
