@@ -1,5 +1,4 @@
 import 'package:ecomm_bloc/data/api_service.dart';
-import 'package:ecomm_bloc/data/model/login_response.dart';
 
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_event.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_state.dart';
@@ -21,14 +20,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     try {
       // Call API
-      LoginResponse loginResponse = await ApiService.loginUser(
+      final loginResponse = await ApiService.loginUser(
         event.userId,
         event.password,
       );
 
-      // ✅ Save token & username in Hive
-      await authBox.put("token", loginResponse.token);
+      // Save username, password, and token in Hive
       await authBox.put("username", event.userId);
+      await authBox.put("password", event.password); // ✅ Save password
+      await authBox.put("token", loginResponse.token);
 
       emit(LoginSuccess());
     } catch (e) {
