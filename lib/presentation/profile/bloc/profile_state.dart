@@ -1,37 +1,17 @@
-import 'package:equatable/equatable.dart';
-
-sealed class ProfileState extends Equatable {
+class ProfileState {
   final String userId;
   final String password;
-  final bool isLoading;
+  final String? message;
 
-  const ProfileState({
-    this.userId = "admin",
-    this.password = "1234",
-    this.isLoading = false,
-  });
+  ProfileState({this.userId = "", this.password = "", this.message});
 
-  ProfileState copyWith({
-    String? userId,
-    String? password,
-    bool? isLoading,
-    String? messege,
-  }) {
-    return ProfileInitial(
+  ProfileState copyWith({String? userId, String? password, String? message}) {
+    return ProfileState(
       userId: userId ?? this.userId,
       password: password ?? this.password,
-      isLoading: isLoading ?? this.isLoading,
+      message: message ?? this.message,
     );
   }
-
-  @override
-  List<Object> get props => [userId, password];
 }
 
-final class ProfileInitial extends ProfileState {
-  const ProfileInitial({
-    String userId = "admin",
-    String password = "1234",
-    bool isLoading = false,
-  }) : super(userId: userId, password: password, isLoading: isLoading);
-}
+class ProfileInitial extends ProfileState {}

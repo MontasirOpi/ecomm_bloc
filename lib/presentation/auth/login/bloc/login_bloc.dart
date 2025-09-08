@@ -1,3 +1,4 @@
+import 'package:ecomm_bloc/data/api_service.dart';
 
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_event.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_state.dart';
@@ -7,27 +8,31 @@ import 'package:hive_flutter/hive_flutter.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final Box authBox;
 
-  final String defaultUserId = "admin";
-  final String defaultPassword = "12345";
-
   LoginBloc(this.authBox) : super(LoginInitial()) {
     on<LoginButtonPressed>(_onLoginButtonPressed);
   }
 
-  void _onLoginButtonPressed(
+  Future<void> _onLoginButtonPressed(
     LoginButtonPressed event,
     Emitter<LoginState> emit,
   ) async {
     emit(LoginLoading());
 
-    await Future.delayed(const Duration(milliseconds: 500)); // simulate delay
+    try {
+      // Call API
+      final loginResponse = await ApiService.loginUser(
+        event.userId,
+        event.password,
+      );
 
-    String savedPass = authBox.get("password", defaultValue: defaultPassword);
+      // Save username, password, and token in Hive
+      await authBox.put("username", event.userId);
+      await authBox.put("password", event.password); // ✅ Save password
+      await authBox.put("token", loginResponse.token);
 
-    if (event.userId == defaultUserId && event.password == savedPass) {
       emit(LoginSuccess());
-    } else {
-      emit(LoginFailure("Invalid User ID or Password"));
+    } catch (e) {
+      emit(LoginFailure("Login failed: $e"));
     }
   }
 }

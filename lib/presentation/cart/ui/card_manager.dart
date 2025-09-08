@@ -1,3 +1,4 @@
+// presentation/cart/ui/card_manager.dart
 import 'package:ecomm_bloc/data/model/product_model.dart';
 import 'package:hive/hive.dart';
 
@@ -60,6 +61,12 @@ class CartManager {
       _cart.remove(product);
     }
     _saveCart();
+  }
+
+  // ADD THIS METHOD
+  static void clearCart() {
+    _cart.clear();
+    _cartBox.clear(); // Also clear the Hive box
   }
 
   static double getTotalPrice() {

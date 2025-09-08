@@ -22,19 +22,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showChangePasswordDialog() {
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Change Password"),
+        title: Text("Change Password", style: theme.textTheme.titleMedium),
         content: TextField(
           controller: _passController,
           obscureText: true,
-          decoration: const InputDecoration(labelText: "New Password"),
+          decoration: InputDecoration(
+            labelText: "New Password",
+            labelStyle: theme.textTheme.bodyMedium,
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
+            child: Text("Cancel", style: theme.textTheme.bodyMedium),
           ),
           ElevatedButton(
             onPressed: () {
@@ -54,6 +58,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return BlocConsumer<ProfileBloc, ProfileState>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -64,22 +71,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Center(
                 child: Column(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 40,
-                      child: Icon(Icons.person, size: 40),
+                      backgroundColor: theme.colorScheme.primary.withOpacity(
+                        0.2,
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
                     const SizedBox(height: 20),
 
                     Text(
                       "User ID: ${state.userId}",
-                      style: const TextStyle(fontSize: 18),
+                      style: textTheme.titleMedium,
                     ),
 
                     const SizedBox(height: 10),
 
                     Text(
                       "Password: ${state.password}",
-                      style: const TextStyle(fontSize: 18, color: Colors.grey),
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: theme.hintColor,
+                      ),
                     ),
 
                     const SizedBox(height: 30),
@@ -94,11 +110,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ElevatedButton(
                       onPressed: () {
                         context.read<ProfileBloc>().add(Logout());
-                        context.go("/login"); // ✅ GoRouter instead of Navigator
+                        context.go("/login"); // ✅ GoRouter
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
+                        backgroundColor: theme.colorScheme.error,
+                        foregroundColor: theme.colorScheme.onError,
                       ),
                       child: const Text("Logout"),
                     ),

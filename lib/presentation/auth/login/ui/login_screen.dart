@@ -13,8 +13,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _idController = TextEditingController(text: "admin");
-  final _passwordController = TextEditingController();
+  final _idController = TextEditingController(
+    text: "mor_2314",
+  ); // default for FakeStoreAPI
+  final _passwordController = TextEditingController(
+    text: "83r5^_",
+  ); // default password
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
 
@@ -30,9 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
               listener: (context, state) {
                 if (state is LoginSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Login Successful ")),
+                    const SnackBar(content: Text("Login Successful")),
                   );
-                  context.go("/home"); //  GoRouter navigation
+                  context.go("/home");
                 } else if (state is LoginFailure) {
                   ScaffoldMessenger.of(
                     context,
@@ -53,8 +57,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _idController,
-                      enabled: false,
                       decoration: const InputDecoration(labelText: "User ID"),
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Enter User ID"
+                          : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
@@ -87,8 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (_formKey.currentState!.validate()) {
                                 context.read<LoginBloc>().add(
                                   LoginButtonPressed(
-                                    userId: _idController.text,
-                                    password: _passwordController.text,
+                                    userId: _idController.text.trim(),
+                                    password: _passwordController.text.trim(),
                                   ),
                                 );
                               }

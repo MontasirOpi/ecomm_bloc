@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
-import 'package:ecomm_bloc/presentation/cart/bloc/cart_event.dart';
-import 'package:ecomm_bloc/presentation/cart/bloc/cart_state.dart';
+import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -14,38 +11,30 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cartItems = CartManager.cartItems;
+
     // Clear image cache to avoid stale data
     imageCache.clear();
     imageCache.clearLiveImages();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
+        title: Center(
           child: Text(
             "Cart",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
-      body: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          if (state is CartLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is CartError) {
-            return Center(child: Text('Error: ${state.message}'));
-          } else if (state is CartLoaded) {
-            final cartItems = state.cartItems;
-
-            if (cartItems.isEmpty) {
-              return const Center(child: Text("Cart is empty"));
-            }
-
-            return Column(
+      body: cartItems.isEmpty
+          ? Center(
+              child: Text("Cart is empty", style: theme.textTheme.bodyMedium),
+            )
+          : Column(
               children: [
                 Expanded(
                   child: ListView.builder(
@@ -63,49 +52,56 @@ class _CartScreenState extends State<CartScreen> {
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
-                          errorWidget: (context, url, error) {
-                            return const Icon(
-                              Icons.broken_image,
-                              size: 40,
-                              color: Colors.grey,
-                            );
-                          },
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.broken_image,
+                            size: 40,
+                            color: theme.iconTheme.color?.withOpacity(0.6),
+                          ),
                         ),
                         title: Text(
                           product.title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium,
                         ),
-                        subtitle: Text("\$${product.price.toStringAsFixed(2)}"),
+                        subtitle: Text(
+                          "\$${product.price.toStringAsFixed(2)}",
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                               icon: const Icon(Icons.remove),
                               onPressed: () {
-                                context.read<CartBloc>().add(
-                                  CartDecreaseQuantityEvent(product),
-                                );
+                                setState(() {
+                                  CartManager.decreaseQuantity(product);
+                                });
                               },
                             ),
                             Text(
                               quantity.toString(),
-                              style: const TextStyle(fontSize: 16),
+                              style: theme.textTheme.bodyMedium,
                             ),
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
-                                context.read<CartBloc>().add(
-                                  CartIncreaseQuantityEvent(product),
-                                );
+                                setState(() {
+                                  CartManager.increaseQuantity(product);
+                                });
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
+                              icon: Icon(
+                                Icons.delete,
+                                color: theme.colorScheme.error,
+                              ),
                               onPressed: () {
-                                context.read<CartBloc>().add(
-                                  CartRemoveEvent(product),
-                                );
+                                setState(() {
+                                  CartManager.removeFromCart(product);
+                                });
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text("Removed from cart"),
@@ -125,35 +121,32 @@ class _CartScreenState extends State<CartScreen> {
                     horizontal: 16,
                     vertical: 12,
                   ),
-                  color: Colors.grey[200],
+                  color: theme.cardColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Total:",
-                        style: TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        "\$${state.totalPrice.toStringAsFixed(2)}",
-                        style: const TextStyle(
-                          fontSize: 18,
+                        "\$${CartManager.getTotalPrice().toStringAsFixed(2)}",
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          color: theme.colorScheme.secondary,
                         ),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text("Check Out"),
                       ),
                     ],
                   ),
                 ),
               ],
-            );
-          } else {
-            return const Center(child: Text("Cart is empty"));
-          }
-        },
-      ),
+            ),
     );
   }
 }

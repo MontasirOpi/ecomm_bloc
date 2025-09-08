@@ -1,34 +1,34 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
-import 'model/product_model.dart';
+import 'package:ecomm_bloc/app/urls.dart';
+import 'package:ecomm_bloc/data/model/product_model.dart';
+import 'package:ecomm_bloc/data/model/login_response.dart';
+import 'package:ecomm_bloc/data/network/network_services_api.dart';
 
 class ApiService {
-  static const String baseUrl = "https://fakestoreapi.com";
+  static const String baseUrl = Urls.baseUrl;
+  //static const String baseUrl = "https://fakestoreapi.com";
+  static final NetworkServicesApi _apiService = NetworkServicesApi();
 
   /// Fetch all products
   static Future<List<Product>> fetchProducts() async {
-    final url = Uri.parse("$baseUrl/products");
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      List data = json.decode(response.body);
-      return data.map((e) => Product.fromJson(e)).toList();
-    } else {
-      throw Exception("Failed to load products");
-    }
+    final data = await _apiService.getApi("$baseUrl/products");
+    return (data as List).map((e) => Product.fromJson(e)).toList();
   }
 
   /// Fetch a single product by ID
   static Future<Product> fetchProductById(int id) async {
-    final url = Uri.parse("$baseUrl/products/$id");
-    final response = await http.get(url);
+    final data = await _apiService.getApi("$baseUrl/products/$id");
+    return Product.fromJson(data);
+  }
 
-    if (response.statusCode == 200) {
-      return Product.fromJson(json.decode(response.body));
-    } else {
-      throw Exception("Failed to load product");
-    }
+  /// Login user
+  static Future<LoginResponse> loginUser(
+    String username,
+    String password,
+  ) async {
+    final data = await _apiService.PostApi("$baseUrl/auth/login", {
+      "username": username,
+      "password": password,
+    });
+    return LoginResponse.fromJson(data);
   }
 }

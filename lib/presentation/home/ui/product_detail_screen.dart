@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
 import 'package:ecomm_bloc/data/model/product_model.dart';
 import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +11,10 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 👇 For now using only 3 sample images (the same product image repeated)
-    // You can replace this with a `List<String>` from API if product has multiple images
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    // For now using only 3 sample images (same product image repeated)
     final List<String> productImages = [
       product.image,
       product.image,
@@ -26,6 +27,7 @@ class ProductDetailScreen extends StatelessWidget {
           product.title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          style: textTheme.titleMedium,
         ),
       ),
       body: SingleChildScrollView(
@@ -52,45 +54,38 @@ class ProductDetailScreen extends StatelessWidget {
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
-                    errorWidget: (context, url, error) {
-                      debugPrint("Image load error for $url: $error");
-                      return const Icon(
-                        Icons.broken_image,
-                        size: 60,
-                        color: Colors.grey,
-                      );
-                    },
+                    errorWidget: (context, url, error) => Icon(
+                      Icons.broken_image,
+                      size: 60,
+                      color: theme.iconTheme.color?.withOpacity(0.6),
+                    ),
                   ),
                 );
               }).toList(),
             ),
 
             const SizedBox(height: 20),
-            Text(
-              product.title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            Text(product.title, style: textTheme.titleLarge),
             const SizedBox(height: 10),
             Text(
               "\$${product.price.toStringAsFixed(2)}",
-              style: const TextStyle(fontSize: 18, color: Colors.green),
+              style: textTheme.titleMedium?.copyWith(
+                color: theme.colorScheme.secondary,
+              ),
             ),
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.star, color: Colors.amber, size: 20),
+                Icon(Icons.star, color: theme.colorScheme.secondary, size: 20),
                 const SizedBox(width: 4),
                 Text(
                   "${product.rating.rate} (${product.rating.count} reviews)",
-                  style: const TextStyle(fontSize: 14),
+                  style: textTheme.bodyMedium,
                 ),
               ],
             ),
             const SizedBox(height: 20),
-            Text(
-              product.description,
-              style: const TextStyle(fontSize: 14, color: Colors.black87),
-            ),
+            Text(product.description, style: textTheme.bodySmall),
             const SizedBox(height: 30),
             Center(
               child: ElevatedButton.icon(
@@ -102,15 +97,7 @@ class ProductDetailScreen extends StatelessWidget {
                 },
                 icon: const Icon(Icons.add_shopping_cart),
                 label: const Text("Add to Cart"),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+                // 👇 Uses global ElevatedButtonTheme from ThemeData
               ),
             ),
           ],
