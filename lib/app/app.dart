@@ -1,3 +1,4 @@
+import 'package:ecomm_bloc/app/app_them.dart';
 import 'package:ecomm_bloc/presentation/auth/login/bloc/login_bloc.dart';
 import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
 import 'package:ecomm_bloc/presentation/home/bloc/home_screen_bloc.dart';
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.router,
+        theme: AppThemeData.LightThemeData, // light theme
+        darkTheme: AppThemeData.DarkThemeData, // dark theme
+        themeMode: ThemeMode.system, // follow device theme
       ),
     );
   }

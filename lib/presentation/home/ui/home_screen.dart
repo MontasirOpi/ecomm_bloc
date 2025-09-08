@@ -1,4 +1,3 @@
-import 'package:ecomm_bloc/app/app_colors.dart';
 import 'package:ecomm_bloc/presentation/cart/bloc/cart_bloc.dart';
 import 'package:ecomm_bloc/presentation/cart/bloc/cart_event.dart';
 import 'package:ecomm_bloc/presentation/home/ui/product_grid.dart';

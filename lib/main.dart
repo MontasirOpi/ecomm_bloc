@@ -20,7 +20,6 @@ void main() async {
     // If initialization fails, show a simple error UI
     runApp(
       MaterialApp(
-        theme: AppThemeData.LightThemeData,
         home: Scaffold(
           body: Center(
             child: Text(
