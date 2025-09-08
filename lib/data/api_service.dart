@@ -1,9 +1,11 @@
+import 'package:ecomm_bloc/app/urls.dart';
 import 'package:ecomm_bloc/data/model/product_model.dart';
 import 'package:ecomm_bloc/data/model/login_response.dart';
 import 'package:ecomm_bloc/data/network/network_services_api.dart';
 
 class ApiService {
-  static const String baseUrl = "https://fakestoreapi.com";
+  static const String baseUrl = Urls.baseUrl;
+  //static const String baseUrl = "https://fakestoreapi.com";
   static final NetworkServicesApi _apiService = NetworkServicesApi();
 
   /// Fetch all products

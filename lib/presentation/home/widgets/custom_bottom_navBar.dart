@@ -1,3 +1,5 @@
+import 'package:ecomm_bloc/app/app_colors.dart';
+import 'package:ecomm_bloc/app/app_them.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
@@ -13,6 +15,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      backgroundColor: AppColors.themeColor,
       type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
       onTap: onTap,

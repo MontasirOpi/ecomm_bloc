@@ -15,6 +15,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -25,8 +27,7 @@ class ProductCard extends StatelessWidget {
         );
       },
       child: Card(
-        elevation: 3,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        // 👇 Card automatically uses `cardTheme` from ThemeData
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -41,10 +42,10 @@ class ProductCard extends StatelessWidget {
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  errorWidget: (context, url, error) => const Icon(
+                  errorWidget: (context, url, error) => Icon(
                     Icons.broken_image,
                     size: 60,
-                    color: Colors.grey,
+                    color: theme.iconTheme.color?.withOpacity(0.6),
                   ),
                 ),
               ),
@@ -58,16 +59,10 @@ class ProductCard extends StatelessWidget {
                     product.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
+                    style: theme.textTheme.titleMedium,
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    "\$${product.price}",
-                    style: const TextStyle(color: Colors.green, fontSize: 13),
-                  ),
+                  Text("\$${product.price}", style: theme.textTheme.bodyMedium),
                   const SizedBox(height: 4),
                   Row(
                     children: [
@@ -75,14 +70,14 @@ class ProductCard extends StatelessWidget {
                       const SizedBox(width: 2),
                       Text(
                         "${product.rating.rate}",
-                        style: const TextStyle(fontSize: 12),
+                        style: theme.textTheme.bodySmall,
                       ),
                       const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.add_shopping_cart),
                         onPressed: onAddToCart,
-                        iconSize: 20,
-                        color: Colors.blue,
+                        color: theme.iconTheme.color,
+                        iconSize: theme.iconTheme.size ?? 20,
                       ),
                     ],
                   ),

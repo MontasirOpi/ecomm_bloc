@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
+
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -11,22 +12,28 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cartItems = CartManager.cartItems;
+
     // Clear image cache to avoid stale data
     imageCache.clear();
     imageCache.clearLiveImages();
-    final cartItems = CartManager.cartItems;
 
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: const Text(
+          child: Text(
             "Cart",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
       body: cartItems.isEmpty
-          ? const Center(child: Text("Cart is empty"))
+          ? Center(
+              child: Text("Cart is empty", style: theme.textTheme.bodyMedium),
+            )
           : Column(
               children: [
                 Expanded(
@@ -35,7 +42,7 @@ class _CartScreenState extends State<CartScreen> {
                     itemBuilder: (context, index) {
                       final product = cartItems.keys.elementAt(index);
                       final quantity = cartItems[product]!;
-                      debugPrint("Cart Image URL: ${product.image}");
+
                       return ListTile(
                         leading: CachedNetworkImage(
                           imageUrl: product.image,
@@ -45,21 +52,24 @@ class _CartScreenState extends State<CartScreen> {
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
-                          errorWidget: (context, url, error) {
-                            debugPrint("Image load error for $url: $error");
-                            return const Icon(
-                              Icons.broken_image,
-                              size: 40,
-                              color: Colors.grey,
-                            );
-                          },
+                          errorWidget: (context, url, error) => Icon(
+                            Icons.broken_image,
+                            size: 40,
+                            color: theme.iconTheme.color?.withOpacity(0.6),
+                          ),
                         ),
                         title: Text(
                           product.title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium,
                         ),
-                        subtitle: Text("\$${product.price.toStringAsFixed(2)}"),
+                        subtitle: Text(
+                          "\$${product.price.toStringAsFixed(2)}",
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.secondary,
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -73,7 +83,7 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             Text(
                               quantity.toString(),
-                              style: const TextStyle(fontSize: 16),
+                              style: theme.textTheme.bodyMedium,
                             ),
                             IconButton(
                               icon: const Icon(Icons.add),
@@ -84,7 +94,10 @@ class _CartScreenState extends State<CartScreen> {
                               },
                             ),
                             IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
+                              icon: Icon(
+                                Icons.delete,
+                                color: theme.colorScheme.error,
+                              ),
                               onPressed: () {
                                 setState(() {
                                   CartManager.removeFromCart(product);
@@ -108,26 +121,27 @@ class _CartScreenState extends State<CartScreen> {
                     horizontal: 16,
                     vertical: 12,
                   ),
-                  color: Colors.grey[200],
+                  color: theme.cardColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Total:",
-                        style: TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
                         "\$${CartManager.getTotalPrice().toStringAsFixed(2)}",
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          color: theme.colorScheme.secondary,
                         ),
                       ),
-                      TextButton(onPressed: () {}, child: Text('Chack Out')),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text("Check Out"),
+                      ),
                     ],
                   ),
                 ),

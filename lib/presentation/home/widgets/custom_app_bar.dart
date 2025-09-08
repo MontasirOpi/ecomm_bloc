@@ -1,3 +1,4 @@
+import 'package:ecomm_bloc/app/app_colors.dart';
 import 'package:ecomm_bloc/presentation/cart/ui/card_manager.dart';
 import 'package:ecomm_bloc/presentation/cart/ui/cart_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     int cartCount = _getCartCount();
 
     return AppBar(
+      backgroundColor: AppColors.themeColor,
       title: Text(widget.title),
       centerTitle: true,
       actions: [
